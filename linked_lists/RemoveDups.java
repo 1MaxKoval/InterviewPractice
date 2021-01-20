@@ -52,12 +52,14 @@ public class RemoveDups {
 
             while (secondNode != null) {
                 if (secondNode.val == currentNode.val) {
+                    
                     if (secondNode.next == null) {
                         prevNode.next = null;
                     }
                     else {
                         prevNode.next = secondNode.next;
                     }
+
                 } else {
                     prevNode = secondNode;
                 }
