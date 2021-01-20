@@ -11,7 +11,7 @@ public class KthToLast {
             newList.add(9);
             newList.add(30);
             newList.add(30);
-            System.out.println(kthToLast(newList.headNode, 3).val);
+            System.out.println(kthToLastRecur(newList.headNode, 3));
         }
     
 
@@ -39,6 +39,19 @@ public class KthToLast {
         }
         return null;
     }
+
+    public static int kthToLastRecur(MyLinkedList.Node headNode, int k) {
+        if (headNode == null){
+            return 0;
+        }
+
+        int index = kthToLastRecur(headNode.next, k)+1;
+        if (index == k) {
+            System.out.println("It is " + headNode.val);
+        }
+        return index;
+    }
+
 
 
     
