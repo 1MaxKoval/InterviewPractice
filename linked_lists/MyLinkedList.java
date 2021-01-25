@@ -1,5 +1,6 @@
 package linked_lists;
 
+    
 public class MyLinkedList {
     Node headNode;
     
