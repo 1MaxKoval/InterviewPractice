@@ -2,12 +2,26 @@ package trees_and_graphs;
 
 import java.util.*;
 
-import jdk.internal.jshell.tool.resources.l10n;
+
+class StringManager {
+    StringBuilder order = new StringBuilder();
+    
+    public void addProject(Character project) {
+        order.append(project);
+        order.append(',');
+        order.append(' ');
+    }
+
+    public String toString() {
+        return new String(this.order);
+    }
+
+}
 
 public class BuildOrder {
     int workingNode;
 
-    public void main(String[] args) {
+    public static void main(String[] args) {
         //Create graph
 
         Scanner scanner = new Scanner(System.in);
@@ -18,7 +32,13 @@ public class BuildOrder {
         graph.generateGraph(line);
         ArrayList<Project> noDependencyProjects = nodesWithNoDependencies(graph);
         StringManager result = new StringManager();
-        updateDependencyList(noDependencyProjects, 0, result);
+
+        for (Project node : noDependencyProjects) {
+            result.addProject(node.name);
+        }
+
+        int workingNodes = updateDependencyList(noDependencyProjects, 0, result);
+        System.out.println(result.toString());
     }
 
     public static int updateDependencyList(ArrayList<Project> nodesWithNoDependency, int workingPointer, StringManager result) {
@@ -30,33 +50,18 @@ public class BuildOrder {
                 childNode.decerementDependencies();
 
                 if (childNode.getDependencies() == 0) {
+                    result.addProject(childNode.name);
                     nodesWithNoDependency.add(childNode);
                     arraySize++;
                 }
-                
             }
             workingPointer++;
         }
         return workingPointer;
     }
-    
-    class StringManager {
-        StringBuilder order = new StringBuilder();
-        
-        public void addProject(Character project) {
-            order.append(project);
-            order.append(',');
-            order.append(' ');
-        }
-
-        public String getString() {
-            return new String(this.order);
-        }
-
-    }
 
 
-    public ArrayList<Project> nodesWithNoDependencies(Graph graph) {
+    public static ArrayList<Project> nodesWithNoDependencies(Graph graph) {
         HashMap<Character, Project> nodes = graph.getNodes();
         ArrayList<Project> results = new ArrayList<>();
 
@@ -92,7 +97,7 @@ class Graph {
         char[] inputArr = input.toCharArray();
 
         //(a,d) (a,c) ...
-        for (int i = 1; i!=inputArr.length; i+=5) {
+        for (int i = 1; i<inputArr.length; i+=6) {
             Character parent = inputArr[i];
             Character child = inputArr[i+2];
 
