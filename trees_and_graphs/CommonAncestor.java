@@ -82,6 +82,61 @@ public class CommonAncestor {
 
     }
 
+    public Node findAncestor(Node root, Node node1, Node node2) {
+        SubTreeInfo information = checkDescendants(root, node1, node2)
+        return information.ancestor;
+    }
+
+    public SubTreeInfo checkDescendants(Node current, Node node1, Node node2) {
+        if (current == null) {
+            SubTreeInfo information = new SubTreeInfo();
+            information.node1 = false;
+            information.node2 = false;
+            return information;
+        }
+
+        SubTreeInfo left = checkDescendants(current.left, node1, node2);
+        SubTreeInfo right = checkDescendants(current.right, node1, node2);
+
+        SubTreeInfo mergedInfo = combinedInfo(left,right);
+        
+        if (current.val == node1.val) 
+            mergedInfo.node1 = true;
+        
+        else if (current.val == node2.val)
+            mergedInfo.node2 = true; 
+
+        //Found ancestor
+        if (mergedInfo.node1 && mergedInfo.node2 && mergedInfo.ancestor == null) {
+            mergedInfo.ancestor = current;
+            return mergedInfo;
+        }
+
+        return mergedInfo;
+    }
+
+    public SubTreeInfo combinedInfo(SubTreeInfo left, SubTreeInfo right) {
+        SubTreeInfo mergedInfo = new SubTreeInfo();        
+
+        if (left.ancestor != null) 
+            return left;
+        
+        else if (right.ancestor != null) 
+            return right;
+        
+
+        mergedInfo.node1 = (left.node1 || right.node1);
+        mergedInfo.node2 = (left.node2 || right.node2);
+
+        return mergedInfo;
+    }
+
+    class SubTreeInfo {
+        boolean node1 = false;
+        boolean node2 = false;
+        Node ancestor;
+    }
+
 
 }
 
