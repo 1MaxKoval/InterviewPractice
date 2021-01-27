@@ -83,10 +83,13 @@ public class CommonAncestor {
     }
 
     public Node findAncestor(Node root, Node node1, Node node2) {
-        SubTreeInfo information = checkDescendants(root, node1, node2)
+        SubTreeInfo information = checkDescendants(root, node1, node2);
         return information.ancestor;
     }
 
+    //In the case the parents of given nodes are uknown.
+    //Time complexity - O(N)
+    //Space complexigy - O(log N)
     public SubTreeInfo checkDescendants(Node current, Node node1, Node node2) {
         if (current == null) {
             SubTreeInfo information = new SubTreeInfo();
