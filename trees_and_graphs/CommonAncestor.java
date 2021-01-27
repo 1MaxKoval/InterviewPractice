@@ -3,10 +3,12 @@ package trees_and_graphs;
 public class CommonAncestor {
 
     //Time 
-    // O(log(N))
+    // O(log(N)) //If no parent node is given then O(N)
 
     // Space
-    // O(1)
+    // O(1) // If no parent node is given then O(log N)
+    
+    //10, 16, 28, 36, 46, 70, 80, 96
     public Node findCommonAncestor(Node node1, Node node2) {
 
         int depthNode1 = determineDepth(node1);
@@ -53,6 +55,33 @@ public class CommonAncestor {
         return depth;
     }
 
+    //In the case the parent node cannot be accessed 
+    //O(N) - time
+    //O(log N) - space
+    public int determineDepth(Node rootNode, Node searchNode) {
+        if (rootNode == null) {
+            return Integer.MIN_VALUE;
+        }
+
+        if (searchNode.val == rootNode.val) {
+            return 0;
+        }
+
+        int left = determineDepth(rootNode.left, searchNode);
+        int right = determineDepth(rootNode.right, searchNode);
+
+        if (left != Integer.MIN_VALUE) {
+            return left++;
+        }
+        else if (right != Integer.MIN_VALUE) {
+            return right++;
+        }
+        else {
+            return Integer.MIN_VALUE;
+        }
+
+    }
+
 
 }
 
@@ -61,4 +90,5 @@ class Node {
     Node left = null;
     Node right = null;
     Node parent = null;
+    int val;
 }
